@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google 书签管理器</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <button class="nav-btn home-btn" id="homeBtn" title="首页">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="nav-right">
+            <button class="nav-btn" id="getBookmarksBtn" title="获取书签">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 21L12 16L5 21V5C5 4.46957 5.21071 3.96086 5.58579 3.58579C5.96086 3.21071 6.46957 3 7 3H17C17.5304 3 18.0391 3.21071 18.4142 3.58579C18.7893 3.96086 19 4.46957 19 5V21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <button class="nav-btn" id="organizeBtn" title="整理书签">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <button class="nav-btn" id="importExportBtn" title="导入导出">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <button class="nav-btn" id="searchToggleBtn" title="搜索">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                    <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 主要内容区域 -->
+    <div class="main-container">
+        <!-- 左侧文件夹区域 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>文件夹</h3>
+            </div>
+            <div class="folder-list" id="folderList">
+                <div class="loading">暂无文件夹</div>
+            </div>
+        </aside>
+
+        <!-- 右侧书签区域 -->
+        <main class="content">
+            <!-- 搜索区域 -->
+            <div class="search-section">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="搜索书签标题、描述或分类..." class="search-input">
+                    <button class="search-btn" id="searchBtn">
+                        <svg style="padding-top:4px;" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                            <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 书签显示区域 -->
+            <div class="bookmarks-section" id="bookmarksSection">
+                <div class="welcome-message">
+                    <h2>欢迎使用 Google 书签管理器</h2>
+                    <p>点击导航栏的"获取书签"按钮开始使用</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 模态框 -->
+    <!-- 获取书签确认框 -->
+    <div class="modal" id="getBookmarksModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>获取书签</h3>
+                <button class="close-btn" data-modal="getBookmarksModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>确定要获取 Chrome 浏览器的所有书签吗？</p>
+                <p class="note">注意：这将读取您的浏览器书签数据</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-modal="getBookmarksModal">取消</button>
+                <button class="btn btn-primary" id="confirmGetBookmarks">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 整理书签确认框 -->
+    <div class="modal" id="organizeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>整理书签</h3>
+                <button class="close-btn" data-modal="organizeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>确定要使用 AI 整理书签吗？</p>
+                <p class="note">注意：此功能需要配置 AI API 密钥</p>
+                <div class="ai-config">
+                    <label for="aiModel">AI 模型：</label>
+                    <select id="aiModel">
+                        <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                        <option value="gpt-4">GPT-4</option>
+                    </select>
+                    <label for="apiKey">API Key：</label>
+                    <input type="password" id="apiKey" placeholder="请输入您的 API Key">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-modal="organizeModal">取消</button>
+                <button class="btn btn-primary" id="confirmOrganize">开始整理</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导入导出模态框 -->
+    <div class="modal" id="importExportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>导入导出书签</h3>
+                <button class="close-btn" data-modal="importExportModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="import-export-tabs">
+                    <button class="tab-btn active" data-tab="import">导入书签</button>
+                    <button class="tab-btn" data-tab="export">导出书签</button>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="importTab">
+                        <p>选择要导入的 JSON 文件：</p>
+                        <input type="file" id="importFile" accept=".json">
+                        <button class="btn btn-primary" id="importBtn">导入</button>
+                    </div>
+                    <div class="tab-pane" id="exportTab">
+                        <p>导出当前书签为 JSON 文件：</p>
+                        <button class="btn btn-primary" id="exportBtn">导出</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载动画 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>正在处理中...</p>
+        </div>
+    </div>
+
+    <!-- JavaScript 文件 -->
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
